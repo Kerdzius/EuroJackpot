@@ -1,53 +1,67 @@
 #!/usr/bin/env python4
 from tkinter import *
-from tkinter import ttk
 from euroJackpot import euroJackpotWebScrap
 from tkinter import messagebox
-from time import sleep
+
 
 
 class GUIforEuroJackpotWeb:
 
+    # Constructor for the GUI class
+    # Creates the Graphic User Interface with Labels, Entries and Buttons
     def __init__(self):
+        #Creates the main window for Graphic User Interface
         self.window = Tk()
 
         self.nrFrom = StringVar()
         self.nrTo = StringVar()
 
+        #Creates Entries and Button by calling in the methods
         self.theEntries()
         self.theButton()
 
+        #Creates an 'euroJackpot' object
         self.newWebScrap = euroJackpotWebScrap()
+
+        #Declares and assigns the CurrentMaximum(Current number of euroJackpot games)
         self.currentMaximum = self.newWebScrap.currentMax()
 
-        li1 = Label(self.window, text="Current minimum: 1")
-        li1.grid(row=0, column=0)
-        li2 = Label(self.window, text="From:")
-        li2.grid(row=1, column=0)
-        li3 = Label(self.window, text="To:")
-        li3.grid(row=1, column=2)
-        li4 = Label(self.window, text="Current maximum:")
-        li4.grid(row=0, column=2)
-        li5 = Label(self.window, text=self.currentMaximum)
-        li5.grid(row=0, column=3)
-        li6 = Label(self.window, text='Current Status:')
-        li6.grid(row=3, column=0)
-        li7 = Label(self.window, text='Waiting for input')
-        li7.grid(row=3, column=1)
-
+        #Initialises the Labels of the Grahpic user interface
+        label1 = Label(self.window, text="Current minimum: 1")
+        label1.grid(row=0, column=0)
+        label2 = Label(self.window, text="From:")
+        label2.grid(row=1, column=0)
+        label3 = Label(self.window, text="To:")
+        label3.grid(row=1, column=2)
+        label4 = Label(self.window, text="Current maximum:")
+        label4.grid(row=0, column=2)
+        label5 = Label(self.window, text=self.currentMaximum)
+        label5.grid(row=0, column=3)
+        label6 = Label(self.window, text='Current Status:')
+        label6.grid(row=3, column=0)
+        label7 = Label(self.window, text='Waiting for input')
+        label7.grid(row=3, column=1)
+        # Main loop for Graphic user interface to keep it renewed
         self.window.mainloop()
 
+    # A method that helps to initialise the Entries into the Graphic User Interface
     def theEntries(self):
+        # Initialises the Entry, which is going to be the first euroJacktop game
+        # of which the user wants to gather the data
         entryFrom = Entry(self.window, textvariable=self.nrFrom)
         entryFrom.grid(row=1, column=1)
 
+        # Initialises the Entry, which is going to be the last euroJacktop game
+        # of which the user wants to gather the data
         entryTo = Entry(self.window, textvariable=self.nrTo)
         entryTo.grid(row=1, column=3)
 
+    # A method that help to initialise the Buttons into the Graphic User Interface
     def theButton(self):
-        b1 = Button(self.window, text="Run", command=self.buttonExecute)
-        b1.grid(row=3, column=3)
+        button1 = Button(self.window, text="Run", command=self.buttonExecute)
+        button1.grid(row=3, column=3)
 
+    # A method that works after the button in the GUI is pressed. Works as a coordinating method
     def buttonExecute(self):
         check = self.GUIchecks()
         if check == True:
@@ -56,6 +70,8 @@ class GUIforEuroJackpotWeb:
             self.newWebScrap.coord(textNrFrom, textNrTo)
             messagebox.showinfo("Title", "The information has been gathered successfully")
 
+    # A method that runs the checks to see if the information that has been entered by the user
+    # are within the scope of the program
     def GUIchecks(self):
         GUIReturn = False
         try:
