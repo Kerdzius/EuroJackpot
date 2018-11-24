@@ -15,9 +15,16 @@ class euroJackpotWebScrap:
         # gather data from
         # The YYYY in the webPageEuroJackpot must be replaced with the last game number that the user wants to
         # gather data
-        self.webPageEuroJackpot = "https://perku.perlas.lt/lt/statistic/eurojackpot?" \
-                                  "tab=archive&Filter%5BdrawFrom%5D=XXXX&Filter%5BdrawTo%5D=YYYY"
+        self.webPageEuroJackpot = "https://perlas.lt/lt/statistic/eurojackpot?tab=archive&Filter%5BdrawFrom%5D=" \
+                                  "XXXX&Filter%5BdrawTo%5D=YYYY"
         self.date = date(2013, 2, 1)
+        self.fileLocation = ''
+
+    def setFileLocation(self, location):
+        self.fileLocation = location +'.csv'
+
+    def getFileLocation(self):
+        return self.fileLocation
 
     # Method that changes the initial webpage by including the correct beginning and the end of the required data
     def setPage(self, nrFrom, nrTo):
@@ -55,7 +62,7 @@ class euroJackpotWebScrap:
     # returns False if the file is currently opened
     def testTextFile(self):
         try:
-            with open('myData.csv', 'w', newline='') as csvFile:
+            with open(self.fileLocation, 'w', newline='') as csvFile:
                 csvFile.close
                 return True
         except IOError:
@@ -67,7 +74,7 @@ class euroJackpotWebScrap:
         numbers = self.requesting('numbers', self.webPageEuroJackpot)
         gameNr = self.requesting('gameNr', self.webPageEuroJackpot)
         bonusNr = self.requesting('bonusNr', self.webPageEuroJackpot)
-        with open('myData.csv', 'w', newline='') as csvFile:
+        with open(self.fileLocation, 'w', newline='') as csvFile:
             writer = csv.writer(csvFile, delimiter=';')
             while len(gameNr) > 0:
                 fullOne = []
@@ -106,3 +113,4 @@ class euroJackpotWebScrap:
         self.setPage(numbersFrom, numbersTo)
         self.adjustDate(int(numbersFrom))
         self.writeNumbers()
+
